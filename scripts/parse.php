@@ -1,5 +1,5 @@
 <?php
-$tmpPath = __DIR__ . '/tmp/lands';
+$tmpPath = dirname(__DIR__) . '/tmp/lands';
 if(!file_exists($tmpPath)) {
   mkdir($tmpPath, 0777, true);
 }
@@ -10,6 +10,7 @@ $fc->features = array();
 
 $fh = fopen(__DIR__ . '/lands.csv', 'r');
 $header = fgetcsv($fh, 2048);
+$count = 0;
 //http://twland.ronny.tw/index/search?lands[]=台中市,新磁磘段,701
 while($line = fgetcsv($fh, 2048)) {
   $line = array_combine($header, $line);
@@ -73,11 +74,10 @@ while($line = fgetcsv($fh, 2048)) {
       $fc->features[] = $matched;
     }
   }
+  if(false === $matched) {
+    ++$count;
+  }
 }
-$tmpFile = __DIR__ . '/lands.geo.json';
-$targetFile = dirname(__DIR__) . '/lands.topo.json';
-if(file_exists($targetFile)) {
-  unlink($targetFile);
-}
-file_put_contents($tmpFile, json_encode($fc));
-exec("/usr/local/bin/mapshaper -i {$tmpFile} -o format=topojson {$targetFile}");
+$targetFile = dirname(__DIR__) . '/lands.geo.json';
+file_put_contents($targetFile, json_encode($fc));
+error_log($count . ' not found');
