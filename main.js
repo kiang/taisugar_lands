@@ -42,7 +42,7 @@ var baseLayer = new ol.layer.Tile({
     source: new ol.source.WMTS({
         matrixSet: 'EPSG:3857',
         format: 'image/png',
-        url: 'http://maps.nlsc.gov.tw/S_Maps/wmts',
+        url: 'http://wmts.nlsc.gov.tw/wmts',
         layer: 'EMAP',
         tileGrid: new ol.tilegrid.WMTS({
             origin: ol.extent.getTopLeft(projectionExtent),
